@@ -1,12 +1,6 @@
 #include "Network.hpp"
-#include "Display.hpp"
 
-void Display::SetTitle(const char* title) const
-{
-	glfwSetWindowTitle(window, title);
-}
-
-inline void Poll()
+inline static void Poll()
 {
 	while (Network.context != NULL)
 	{
@@ -22,14 +16,13 @@ Network::~Network()
 	};
 }
 
-int Callback(struct lws* wsi, enum lws_callback_reasons reason, void* user, void* in, size_t len)
+int static Callback(struct lws* wsi, enum lws_callback_reasons reason, void* user, void* in, size_t len)
 {
 	switch (reason)
 	{
 
 	case LWS_CALLBACK_CLIENT_ESTABLISHED:
 		Network.offline = false;
-		Display.SetTitle("WebITG (Online)");
 		break;
 
 	case LWS_CALLBACK_CLIENT_RECEIVE:
@@ -47,8 +40,14 @@ int Callback(struct lws* wsi, enum lws_callback_reasons reason, void* user, void
 		if (packet_type == 0x0001)
 		{
 			buff = (unsigned char*)calloc(1, 2 + 4);
-			buff[0] = 0x01;
-			lws_write(wsi, buff, 2 + 4, LWS_WRITE_BINARY);
+			if (buff == NULL)
+			{
+				break;
+			}
+			else {
+				buff[0] = 0x01;
+				lws_write(wsi, buff, 2 + 4, LWS_WRITE_BINARY);
+			}
 		}
 
 		break;
@@ -59,7 +58,6 @@ int Callback(struct lws* wsi, enum lws_callback_reasons reason, void* user, void
 		std::cout << "Disconnected from server!" << std::endl;
 		Network.web_socket = NULL;
 		Network.offline = true;
-		Display.SetTitle("WebITG (Offline)");
 		break;
 
 	default:

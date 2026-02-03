@@ -1,6 +1,7 @@
 #ifndef DISPLAY_HPP
 #define DISPLAY_HPP
 
+#include <iostream>
 
 #ifndef GLFW_NO_INCLUDE
 #include "glad/glad.h"
@@ -8,16 +9,10 @@
 #include <GLFW/glfw3.h>
 #endif
 
-#include "Sprite.hpp"
-
-#include <iostream>
-#include "Font.hpp"
-
 struct Display
 {
 	GLFWwindow* window;
 	void Create(int width, int height, const char* title);
-	void SetTitle(const char* title) const;
 } Display;
 
 void Display::Create(int width, int height, const char *title)

@@ -6,7 +6,7 @@
 #include <string>
 #include <thread>
 
-struct Network {
+static struct Network {
 	~Network();
 	bool offline = true;
 	std::thread thread;

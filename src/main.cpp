@@ -2,18 +2,12 @@
 
 #include <iostream>
 
-#include "Display.hpp"
 #include "Network.hpp"
-
-#if defined(WIN32)
-
-#endif
+#include "Display.hpp"
 
 int main()
 {
-    srand(time(0));
     Network.Connect();
-    Display.Create(800, 600, "WebITG (Connecting)");
-
+    Display.Create(800, 600, "iPaint");
     return 0;
 }
